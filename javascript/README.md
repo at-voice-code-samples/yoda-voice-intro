@@ -20,6 +20,8 @@ sequenceDiagram
 	Telephone Network->>+Mobile Subscriber: Bridged Call
 ```
 
+![Call Flow](mermaid-diagram-20190221152733.svg)
+
 Running this application 
 
 - Install Docker : [How to](https://docs.docker.com/install/)
