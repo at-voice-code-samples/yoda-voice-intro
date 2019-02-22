@@ -4,8 +4,9 @@
   "description": "Yoda introductory course on Voice. Features Text-to-speech, media player",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "test": "testcafe"
+    "start": "node src/app.js",
+    "dev":"nodemon src/app.js",
+    "test": "testcafe chrome test/test.js"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,7 @@
   "devDependencies": {
     "http-server": "^0.11.1",
     "morgan": "^1.9.1",
+    "nodemon": "^1.18.10",
     "snyk": "^1.134.2",
     "testcafe": "^1.0.1"
   }

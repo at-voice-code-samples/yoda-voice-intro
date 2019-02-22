@@ -2,20 +2,23 @@ const express    = require('express');
 const xmlbuilder = require('xmlbuilder');
 const bodyParser = require('body-parser');
 
+const mediaFolder = __dirname + '/media';
+
+
 const app = express();
 
 app.use(bodyParser.json());
 
 // we want to serve media files from our app
-app.use(express.static(__dirname + '/media'));
+app.use(express.static(mediaFolder));
 
 const appPort = 3050;
 
 // If you chose to host the file on your own machine OR vm 
 // Make sure to pass the host name when startin the application
-// example DOMAIN=https://www.mydomain.com/media/file.mp3
-// or DOMAIN=https://www.mydomain.com:3050/media/file.mp3
-// DOMAIN=http://1.2.3.4:3050/media/file.mp3
+// example DOMAIN=https://www.mydomain.com/file.mp3
+// or DOMAIN=https://www.mydomain.com:3050/file.mp3
+// DOMAIN=http://1.2.3.4:3050/file.mp3
 // and pass that as the fileUrl
 const serverFQDN = process.env.DOMAIN;
 
