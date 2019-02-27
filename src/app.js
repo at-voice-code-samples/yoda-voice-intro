@@ -2,15 +2,15 @@ const express    = require('express');
 const xmlbuilder = require('xmlbuilder');
 const bodyParser = require('body-parser');
 
-const mediaFolder = __dirname + '/media';
+//const mediaFolder = __dirname + '/media';
 
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 // we want to serve media files from our app
-app.use(express.static(mediaFolder));
+//app.use(express.static(mediaFolder));
 
 const appPort = 3050;
 
@@ -20,51 +20,46 @@ const appPort = 3050;
 // or DOMAIN=https://www.mydomain.com:3050/file.mp3
 // DOMAIN=http://1.2.3.4:3050/file.mp3
 // and pass that as the fileUrl
-const serverFQDN = process.env.DOMAIN;
+//const serverFQDN = process.env.DOMAIN;
 
-const fileUrl = "";
+const fileUrl = "https://s3.eu-west-2.amazonaws.com/at-voice-sample/play.mp3";
 
 let callAction = "";
 
-// Say action 
+// Say and Play actions 
 /**
  * Say
+ * 
  * attributes:
- *             voice    : The voice to use man or woman. Default woman
+ * 
+ *             voice    : The voice to use man or woman. Default 
+ * 
  *             playBeep : Whether to play a beep at the end of the text-to-speech parsing. Default false 
+ * 
  * <Say voice="woman" playBeep="true"> Welcome to Africa's Talking text-to-speech service </Say>
+ * 
+ * Play
+ * 
+ * attributes:
+ * 
+ *            url: A valid url pointing to your media file. Accepted format is MP3
+ * 
+ * <Play url='https://example.com/file.mp3"/>
  */
-const sayAction = xmlbuilder.create('Response')
-        .ele('Say', {'voice': 'man', 'playBeep' : 'true' }, 'Welcome to Africa\'s Talking text-to-speech service')
-        .end({pretty: true});
-
- // Play
- /**
-  * Play
-  * attribute:
-  *            url: A valid url pointing to your media file. Accepted format is MP3
-  * <Play url='https://example.com/file.mp3
-  */       
-const playAction = xmlbuilder.create('Response')
+const sayPlayAction = xmlbuilder.create('Response', {encoding : 'utf-8'})
+        .ele('Say', {'voice': 'man', 'playBeep' : 'true' }, 'Playing your audio file')
+        .up()
+        .root()
         .ele('Play', {'url' : `${fileUrl}`})
-        .end({pretty: true});        
-
-
+        .end({pretty: true});
 
 // This is the root url
 app.get('/', (req, res) =>{
     res.send('It lives!');
 });
 
-// Accept inbound traffic for <Say> 
-app.post('/voice/say', (req, res) =>{
-    callAction = sayAction;
-    res.send(callAction);
-});
-
-// Accept inbound traffic for <Play>
-app.post('/voice/play', (req, res) =>{
-    callAction = playAction;
+app.post('/voice/sayplay', (req, res) =>{
+    callAction = sayPlayAction;
     res.send(callAction);
 });
 
